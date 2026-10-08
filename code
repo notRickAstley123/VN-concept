@@ -1,2 +1,17 @@
-print("hello world")
-#test
+import tkinter as tk
+from tkinter import messagebox
+
+root = tk.Tk()
+root.title("Hello world")
+root.geometry("1000x1000")
+root.configure(bg="white")
+
+form_frame = tk.Frame(root, bg="white")
+form_frame.pack(padx=20, pady=20)
+
+lbl = tk.Label(root, text="Hello World", bg="white", font=("Arial", 16))
+lbl.pack()
+
+messagebox.showinfo("Info", "Hello, World!")
+
+root.mainloop()
