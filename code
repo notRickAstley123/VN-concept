@@ -1,12 +1,32 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 from tkinter import filedialog
 import os
 from tkinter import messagebox
 from tkinter import PhotoImage
 root = tk.Tk()
-root.label("Hello world").grid(column=0, row=0)
-root.label("Hello world").grid(column=5, row=2)
+hello_world = tk.Label(root,
+               text="hello world",
+               font=("Comic Sans MS", 16, "normal"),
+               bg="lightblue",
+               fg="darkblue",
+               width=20,
+               height=2,
+               relief="raised")
+lbl.pack(pady=30)
+#notes:
+#text: The text displayed on the label.
+#image: Displays an image on the label.
+#bg: Sets the background color.
+#fg: Sets the text color.
+#font: Specifies the font style and size.
+#width: Sets the width of the label.
+#height: Sets the height of the label.
+#padx: Adds horizontal padding.
+#pady: Adds vertical padding.
+#relief: Sets the border style (FLAT, RAISED, SUNKEN, etc.).
+
 root.geometry("1000x1000")
 root.configure(bg="white")
 
