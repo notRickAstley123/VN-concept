@@ -25,7 +25,7 @@ lbl.pack(pady=30)
 #height: Sets the height of the label.
 #padx: Adds horizontal padding.
 #pady: Adds vertical padding.
-#relief: Sets the border style (FLAT, RAISED, SUNKEN, etc.).
+#relief: Sets the border style (FLAT, RAISED, SUNKEN, etc).
 
 root.geometry("1000x1000")
 root.configure(bg="white")
@@ -34,7 +34,7 @@ form_frame = tk.Frame(root, bg="white")
 form_frame.pack(padx=20, pady=20)
 # path = 'C:/VN-concept/baka.jpg'
 # img = ImageTk.PhotoImage(Image.open(path))
-
+#trying to set up images n stuff 
 
 lbl = tk.Label(root, text="image", bg="white", font=("Arial", 16))
 baka= PhotoImage(file="baka.jpg")
