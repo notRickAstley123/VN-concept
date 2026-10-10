@@ -5,6 +5,11 @@ from tkinter import filedialog
 import os
 from tkinter import messagebox
 from tkinter import PhotoImage
+import time
+global upgrade1cost
+upgrade1cost=10
+global upgrade1allowed
+upgrade1allowed=False
 root = tk.Tk()
 hello_world = tk.Label(root,
                text="hello world",
@@ -14,7 +19,7 @@ hello_world = tk.Label(root,
                width=20,
                height=2,
                relief="raised")
-lbl.pack(pady=30)
+hello_world.pack(pady=30)
 #notes:
 #text: The text displayed on the label.
 #image: Displays an image on the label.
@@ -26,26 +31,140 @@ lbl.pack(pady=30)
 #padx: Adds horizontal padding.
 #pady: Adds vertical padding.
 #relief: Sets the border style (FLAT, RAISED, SUNKEN, etc).
-
+scoregainclicker1=1
 root.geometry("1000x1000")
 root.configure(bg="white")
-
+global score_total
+score_total = 0
 form_frame = tk.Frame(root, bg="white")
 form_frame.pack(padx=20, pady=20)
 # path = 'C:/VN-concept/baka.jpg'
 # img = ImageTk.PhotoImage(Image.open(path))
-#trying to set up images n stuff 
+#i give up on trying to set up images n stuff
+messagebox.showinfo("Info", "click the button!")
+def presser1(from_button=True):
+    global score_total
+    score_total = score_total + scoregainclicker1
+    score.config(text=("score is:" + str(score_total)))
 
-lbl = tk.Label(root, text="image", bg="white", font=("Arial", 16))
-baka= PhotoImage(file="baka.jpg")
-image_label = tk.Label(parent, image=baka)
-image_label.pack()
-lbl.pack()
-image_label.image = baka  
-image_label.pack(pady=20)
-self.image_frame = tk.Frame(self.root, relief=tk.SUNKEN, bd=2)
-self.image_frame.pack(pady=20, padx=20, fill=tk.BOTH, expand=True)
+score = tk.Label(root,
+                text=("score is:" + str(score_total)),
+                font=("Comic Sans MS", 16, "normal"),
+                bg="lightblue",
+                fg="darkblue",
+            width=20,
+            height=2,
+               relief="raised")
 
-messagebox.showinfo("Info", "Hello, World!")
+score.pack(padx=20, pady=20)
+clicker1 = tk.Button(root, 
+                text="Click Me", 
+                command=presser1,
+                activebackground="green", 
+                activeforeground="white",
+                anchor="center",
+                bd=3,
+                bg="lightgray",
+                cursor="hand2",
+                disabledforeground="gray",
+                fg="black",
+                font=("Arial", 12),
+                height=2,
+                highlightbackground="black",
+                highlightcolor="green",
+                highlightthickness=2,
+                justify="center",
+                overrelief="raised",
+                padx=10,
+                pady=5,
+                width=15,
+                wraplength=100)
+clicker1.pack(padx=20, pady=20)
+
+def upgrade1():
+    global score_total
+    global scoregainclicker1
+    global upgrade1allowed
+    global upgrade1cost
+    if score_total >= upgrade1cost:
+        score_total -= upgrade1cost
+        scoregainclicker1 += 1
+        score.config(text=("score is:" + str(score_total)))
+        messagebox.showinfo("Info", "Upgrade purchased! Click gain increased.")
+        upgrade1cost= upgrade1cost * 1.75
+        upgrade1cost = int(upgrade1cost)
+    else:
+        messagebox.showinfo("Info", "Not enough score to purchase upgrade.")
+def check1():
+    global upgrade1allowed
+    if score_total >= 10 and upgrade1allowed==False:
+        messagebox.showinfo("Info", "you can now buy something")
+        upgrade1allowed=True
+        clicker2 = tk.Button(root, 
+                text="clicker buff", 
+                command=upgrade1,
+                activebackground="green", 
+                activeforeground="white",
+                anchor="center",
+                bd=3,
+                bg="lightgray",
+                cursor="hand2",
+                disabledforeground="gray",
+                fg="black",
+                font=("Arial", 12),
+                height=2,
+                highlightbackground="black",
+                highlightcolor="green",
+                highlightthickness=2,
+                justify="center",
+                overrelief="raised",
+                padx=10,
+                pady=5,
+                width=15,
+                wraplength=100)
+        clicker2.pack(padx=20, pady=50)
+    if not upgrade1allowed:
+            root.after(1000, check1)
+def autoclicker():
+    global score_total
+    global upgrade2allowed
+    def autoclick():
+        global score_total
+        score_total = score_total+1
+        score.config(text=("score is:" + str(score_total)))
+    root.after(500,autoclick)
+root.after (500, autoclicker)
+def check2():
+    global upgrade2allowed
+    if score_total >= 100 and upgrade2allowed==False:
+        messagebox.showinfo("Info", "you can now buy something else")
+        upgrade2allowed=True
+        clicker3 = tk.Button(root, 
+                text="auto clicker", 
+                command=autoclicker,
+                activebackground="green", 
+                activeforeground="white",
+                anchor="center",
+                bd=3,
+                bg="lightgray",
+                cursor="hand2",
+                disabledforeground="gray",
+                fg="black",
+                font=("Arial", 12),
+                height=2,
+                highlightbackground="black",
+                highlightcolor="green",
+                highlightthickness=2,
+                justify="center",
+                overrelief="raised",
+                padx=-10,
+                pady=50,
+                width=15,
+                wraplength=100)
+        clicker3.pack(padx=20, pady=50)
+    if not upgrade2allowed:
+            root.after(1000, check2)
+root.after(1000, check1)
+root.after(1000, check2)
 
 root.mainloop()
