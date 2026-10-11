@@ -133,7 +133,7 @@ def autoclicker():
         score_total = score_total+1
         score.config(text=("score is:" + str(score_total)))
     root.after(500,autoclick)
-root.after (500, autoclicker)
+    root.after (500, autoclicker)
 def check2():
     global upgrade2allowed
     if score_total >= 100 and upgrade2allowed==False:
