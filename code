@@ -14,6 +14,10 @@ upgrade2allowed=False
 global upgrade2cost
 upgrade2cost=100
 root = tk.Tk()
+global upgrade1amount
+upgrade1amount=0
+global upgrade2amount
+upgrade2amount=0
 hello_world = tk.Label(root,
                text="hello world",
                font=("Comic Sans MS", 16, "normal"),
@@ -41,18 +45,15 @@ global score_total
 score_total = 0
 form_frame = tk.Frame(root, bg="white")
 form_frame.pack(padx=20, pady=20)
-# path = 'C:/VN-concept/baka.jpg'
-# img = ImageTk.PhotoImage(Image.open(path))
 #i give up on trying to set up images n stuff
 messagebox.showinfo("Info", "click the button!")
 def presser1(from_button=True):
     global score_total
     score_total = score_total + scoregainclicker1
     score.config(text=("score is:" + str(score_total)))
-
 score = tk.Label(root,
                 text=("score is:" + str(score_total)),
-                font=("Comic Sans MS", 16, "normal"),
+                font=("Arial", 16, "normal"),
                 bg="lightblue",
                 fg="darkblue",
             width=20,
@@ -83,7 +84,22 @@ clicker1 = tk.Button(root,
                 width=15,
                 wraplength=100)
 clicker1.pack(padx=20, pady=20)
-
+cost1= tk.Label(root,
+                text=("clicker upgrade cost:" + str(upgrade1cost)),
+                font=("Comic Sans MS", 16, "normal"),
+                bg="lightblue",
+                fg="darkblue",
+            width=20,
+            height=2,
+               relief="raised")
+cost2 = tk.Label(root,
+                text=("autoclick cost:" + str(upgrade2cost)),
+                font=("Comic Sans MS", 16, "normal"),
+                bg="lightblue",
+                fg="darkblue",
+            width=20,
+            height=2,
+               relief="raised")
 def upgrade1():
     global score_total
     global scoregainclicker1
@@ -96,15 +112,18 @@ def upgrade1():
         messagebox.showinfo("Info", "Upgrade purchased! Click gain increased.")
         upgrade1cost= upgrade1cost * 1.75
         upgrade1cost = int(upgrade1cost)
+        clicker2.config(text="clicker buff, cost:"+str(upgrade1cost))
+        upgradecounterupdate1()
     else:
         messagebox.showinfo("Info", "Not enough score to purchase upgrade.")
+    
 def check1():
     global upgrade1allowed
     if score_total >= 10 and upgrade1allowed==False:
         messagebox.showinfo("Info", "you can now buy something")
         upgrade1allowed=True
         clicker2 = tk.Button(root, 
-                text="clicker buff", 
+                text="clicker buff, cost:"+str(upgrade1cost), 
                 command=upgrade1,
                 activebackground="green", 
                 activeforeground="white",
@@ -126,8 +145,26 @@ def check1():
                 width=15,
                 wraplength=100)
         clicker2.pack(padx=20, pady=50)
+        upgrade1amountdisplay = tk.Label(root, 
+                                        text=("clicker upgrades bought:" + str(upgrade1amount)),
+                                        font=("Arial", 16, "normal"),
+                                        bg="lightblue",
+                                        fg="darkblue",
+                                        width=20,
+                                        height=2,
+                                        relief="raised")
+        upgrade1amountdisplay.pack(padx=20, pady=50)    
     if not upgrade1allowed:
             root.after(1000, check1)
+
+def upgradecounterupdate1():
+    global upgrade1amount
+    upgrade1amount = upgrade1amount + 1
+    upgrade1amountdisplay.config(text=("clicker upgrades bought:" + str(upgrade1amount)))
+def upgradecounterupdate2():
+    global upgrade2amount
+    upgrade2amount = upgrade2amount + 1
+    upgrade2amountdisplay.config(text=("autoclickers bought:" + str(upgrade2amount)))
 def autoclicker():
     global score_total
     global upgrade2allowed
@@ -136,12 +173,14 @@ def autoclicker():
     score_total=score_total-upgrade2cost
     upgrade2cost=upgrade2cost*1.75
     upgrade2cost=int(upgrade2cost)
-    
+    upgradecounterupdate2()
+    clicker3.config(text="auto clicker, cost:"+str(upgrade2cost))
     def autoclick():
         global score_total
         score_total = score_total+1
         score.config(text=("score is:" + str(score_total)))
         root.after(500,autoclick)
+        
     root.after(500,autoclick)
 def check2():
     global upgrade2allowed
@@ -150,9 +189,9 @@ def check2():
         messagebox.showinfo("Info", "you can now buy something else")
         upgrade2allowed=True
         clicker3 = tk.Button(root, 
-                text="auto clicker", 
+                text="auto clicker, cost:"+str(upgrade2cost), 
                 command=autoclicker,
-                activebackground="green", 
+                activebackground="lightgreen", 
                 activeforeground="white",
                 anchor="center",
                 bd=3,
@@ -164,14 +203,23 @@ def check2():
                 height=2,
                 highlightbackground="black",
                 highlightcolor="green",
-                highlightthickness=2,
+                highlightthickness=3,
                 justify="center",
-                overrelief="raised",
+                overrelief="sunken",
                 padx=10,
                 pady=50,
                 width=15,
                 wraplength=100)
         clicker3.pack(padx=20, pady=50)
+        upgrade2amountdisplay = tk.Label(root, 
+                                        text=("autoclickers bought:" + str(upgrade2amount)),
+                                        font=("Arial", 16, "normal"),
+                                        bg="lightblue",
+                                        fg="darkblue",
+                                        width=20,
+                                        height=2,
+                                        relief="raised")
+        upgrade2amountdisplay.pack(padx=20, pady=50)
     if not upgrade2allowed:
             root.after(1000, check2)
 root.after(1000, check1)
