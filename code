@@ -8,6 +8,7 @@ from tkinter import PhotoImage
 import time
 global upgrade1cost
 upgrade1cost=10
+global upgrade1allowed
 upgrade1allowed=False
 global upgrade2allowed
 upgrade2allowed=False
@@ -18,6 +19,8 @@ global upgrade1amount
 upgrade1amount=0
 global upgrade2amount
 upgrade2amount=0
+global score_total
+score_total=0
 hello_world = tk.Label(root,
                text="hello world",
                font=("Comic Sans MS", 16, "normal"),
@@ -26,7 +29,7 @@ hello_world = tk.Label(root,
                width=20,
                height=2,
                relief="raised")
-hello_world.pack(pady=30)
+hello_world.pack(pady=10)
 #notes:
 #text: The text displayed on the label.
 #image: Displays an image on the label.
@@ -38,13 +41,13 @@ hello_world.pack(pady=30)
 #padx: Adds horizontal padding.
 #pady: Adds vertical padding.
 #relief: Sets the border style (FLAT, RAISED, SUNKEN, etc).
+global scoregainclicker1
 scoregainclicker1=1
 root.geometry("1000x1000")
 root.configure(bg="white")
-global score_total
 score_total = 0
 form_frame = tk.Frame(root, bg="white")
-form_frame.pack(padx=20, pady=20)
+form_frame.pack(padx=20, pady=10)
 #i give up on trying to set up images n stuff
 messagebox.showinfo("Info", "click the button!")
 def presser1(from_button=True):
@@ -60,7 +63,7 @@ score = tk.Label(root,
             height=2,
                relief="raised")
 
-score.pack(padx=20, pady=20)
+score.pack(padx=20, pady=10)
 clicker1 = tk.Button(root, 
                 text="Click Me", 
                 command=presser1,
@@ -83,7 +86,7 @@ clicker1 = tk.Button(root,
                 pady=5,
                 width=15,
                 wraplength=100)
-clicker1.pack(padx=20, pady=20)
+clicker1.pack(padx=20, pady=10)
 cost1= tk.Label(root,
                 text=("clicker upgrade cost:" + str(upgrade1cost)),
                 font=("Comic Sans MS", 16, "normal"),
@@ -102,11 +105,11 @@ cost2 = tk.Label(root,
                relief="raised")
 def upgrade1():
     global score_total
-    global scoregainclicker1
-    global upgrade1allowed
     global upgrade1cost
+    global scoregainclicker1
+    global upgrade1amount
     if score_total >= upgrade1cost:
-        score_total -= upgrade1cost
+        score_total = score_total - upgrade1cost
         scoregainclicker1 += 1
         score.config(text=("score is:" + str(score_total)))
         messagebox.showinfo("Info", "Upgrade purchased! Click gain increased.")
@@ -119,9 +122,11 @@ def upgrade1():
     
 def check1():
     global upgrade1allowed
+    global score_total
     if score_total >= 10 and upgrade1allowed==False:
         messagebox.showinfo("Info", "you can now buy something")
         upgrade1allowed=True
+        global clicker2
         clicker2 = tk.Button(root, 
                 text="clicker buff, cost:"+str(upgrade1cost), 
                 command=upgrade1,
@@ -144,7 +149,8 @@ def check1():
                 pady=5,
                 width=15,
                 wraplength=100)
-        clicker2.pack(padx=20, pady=50)
+        clicker2.pack(padx=20, pady=10)
+        global upgrade1amountdisplay
         upgrade1amountdisplay = tk.Label(root, 
                                         text=("clicker upgrades bought:" + str(upgrade1amount)),
                                         font=("Arial", 16, "normal"),
@@ -153,7 +159,7 @@ def check1():
                                         width=20,
                                         height=2,
                                         relief="raised")
-        upgrade1amountdisplay.pack(padx=20, pady=50)    
+        upgrade1amountdisplay.pack(padx=20, pady=10)    
     if not upgrade1allowed:
             root.after(1000, check1)
 
@@ -165,29 +171,35 @@ def upgradecounterupdate2():
     global upgrade2amount
     upgrade2amount = upgrade2amount + 1
     upgrade2amountdisplay.config(text=("autoclickers bought:" + str(upgrade2amount)))
+global autoclick
+def autoclick():
+    global score_total
+    score_total = score_total+1
+    score.config(text=("score is:" + str(score_total)))
+    root.after(1000,autoclick)
+
 def autoclicker():
     global score_total
-    global upgrade2allowed
     global upgrade2cost
-    messagebox.showinfo("info", "autoclicker purchased!")
-    score_total=score_total-upgrade2cost
-    upgrade2cost=upgrade2cost*1.75
-    upgrade2cost=int(upgrade2cost)
-    upgradecounterupdate2()
-    clicker3.config(text="auto clicker, cost:"+str(upgrade2cost))
-    def autoclick():
-        global score_total
-        score_total = score_total+1
-        score.config(text=("score is:" + str(score_total)))
-        root.after(500,autoclick)
-        
-    root.after(500,autoclick)
+    global upgrade2amount
+    if score_total >= upgrade2cost:
+        messagebox.showinfo("info", "autoclicker purchased!")
+        score_total = score_total - upgrade2cost
+        upgrade2cost = upgrade2cost * 1.75
+        upgrade2cost = int(upgrade2cost)
+        upgradecounterupdate2()
+        clicker3.config(text="auto clicker, cost:"+str(upgrade2cost))
+        root.after(1000, autoclick)
+    else :
+        messagebox.showinfo("info", "youre broke </3 /j")
 def check2():
     global upgrade2allowed
     global upgrade2cost
+    global score_total
     if score_total >= upgrade2cost and upgrade2allowed==False:
         messagebox.showinfo("Info", "you can now buy something else")
         upgrade2allowed=True
+        global clicker3
         clicker3 = tk.Button(root, 
                 text="auto clicker, cost:"+str(upgrade2cost), 
                 command=autoclicker,
@@ -207,10 +219,11 @@ def check2():
                 justify="center",
                 overrelief="sunken",
                 padx=10,
-                pady=50,
+                pady=10,
                 width=15,
                 wraplength=100)
-        clicker3.pack(padx=20, pady=50)
+        clicker3.pack(padx=20, pady=10)
+        global upgrade2amountdisplay
         upgrade2amountdisplay = tk.Label(root, 
                                         text=("autoclickers bought:" + str(upgrade2amount)),
                                         font=("Arial", 16, "normal"),
