@@ -8,8 +8,11 @@ from tkinter import PhotoImage
 import time
 global upgrade1cost
 upgrade1cost=10
-global upgrade1allowed
 upgrade1allowed=False
+global upgrade2allowed
+upgrade2allowed=False
+global upgrade2cost
+upgrade2cost=100
 root = tk.Tk()
 hello_world = tk.Label(root,
                text="hello world",
@@ -128,15 +131,22 @@ def check1():
 def autoclicker():
     global score_total
     global upgrade2allowed
+    global upgrade2cost
+    messagebox.showinfo("info", "autoclicker purchased!")
+    score_total=score_total-upgrade2cost
+    upgrade2cost=upgrade2cost*1.75
+    upgrade2cost=int(upgrade2cost)
+    
     def autoclick():
         global score_total
         score_total = score_total+1
         score.config(text=("score is:" + str(score_total)))
+        root.after(500,autoclick)
     root.after(500,autoclick)
-    root.after (500, autoclicker)
 def check2():
     global upgrade2allowed
-    if score_total >= 100 and upgrade2allowed==False:
+    global upgrade2cost
+    if score_total >= upgrade2cost and upgrade2allowed==False:
         messagebox.showinfo("Info", "you can now buy something else")
         upgrade2allowed=True
         clicker3 = tk.Button(root, 
@@ -157,7 +167,7 @@ def check2():
                 highlightthickness=2,
                 justify="center",
                 overrelief="raised",
-                padx=-10,
+                padx=10,
                 pady=50,
                 width=15,
                 wraplength=100)
