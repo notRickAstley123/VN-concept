@@ -6,6 +6,8 @@ import os
 from tkinter import messagebox
 from tkinter import PhotoImage
 import time
+import random
+gamblingallowed=False
 global upgrade1cost
 upgrade1cost=10
 global upgrade1allowed
@@ -191,7 +193,7 @@ def autoclicker():
         clicker3.config(text="auto clicker, cost:"+str(upgrade2cost))
         root.after(1000, autoclick)
     else :
-        messagebox.showinfo("info", "youre broke </3 /j")
+        messagebox.showinfo("info", "not enough money!")
 def check2():
     global upgrade2allowed
     global upgrade2cost
@@ -232,10 +234,71 @@ def check2():
                                         width=20,
                                         height=2,
                                         relief="raised")
-        upgrade2amountdisplay.pack(padx=20, pady=50)
+        upgrade2amountdisplay.pack(padx=20, pady=10)
     if not upgrade2allowed:
             root.after(1000, check2)
+def gamble():
+    global score_total
+    gambleamount = 1000
+    if score_total >= gambleamount:
+        score_total -= gambleamount
+        def spinny():
+            global roulette
+            for i in range(10):
+                root.after(1)
+                roulette.config(text=str(random.choice([1, 0.5, 0, 1.5, 2, 4, 5, 0, 0.5, 0.5, 1, 1, 0.5, 6, 7, 8,"NAKAYAMA FIESTAAAAAAAAA"])))
+        outcome = random.choice([1, 0.5, 0, 1.5, 2, 4, 5, 0, 0.5, 0.5, 0.5, 0.5, 0.75, 9999999, 0.75, 0.87, 1, 1, 0.5, 6, 7, 8])
+        
+        if outcome > 1 :
+            winnings = (outcome * gambleamount) - gambleamount
+            score_total = (outcome * gambleamount) + score_total
+            messagebox.showinfo("Gamble Result", "You won! You gained" +str(winnings) + " points.")
+        elif outcome < 1:
+            score_total = (outcome * gambleamount) + score_total
+            messagebox.showinfo("Gamble Result", "You lost! Better luck next time.")
+        elif outcome == 1:
+            messagebox.showinfo("Gamble Result", "You broke even! No points gained or lost.")
+        elif outcome == "NAKAYAMA FIESTAAAAAAAAA":
+            messagebox.showinfo("Gamble Result", "how did you.. do that?")
+            score_total = score_total+ 999999999999999999999
+        score.config(text=("score is:" + str(score_total)))
+    else:
+        messagebox.showinfo("Info", "Not enough score to gamble.")
+def gamblecheck():
+    global gamble
+    global gamblingallowed
+    if score_total >= 1000 and gamblingallowed==False:
+        gamblingallowed=True
+        messagebox.showinfo("Info", "hope you're feelin lucky!")
+        messagebox.showinfo("Info", "gamblin' time!")
+        global roulette
+        roulette = tk.Button(root, 
+                    text="gamble 1000 points", 
+                    command=gamble,
+                    activebackground="green", 
+                    activeforeground="white",
+                    anchor="center",
+                    bd=3,
+                    bg="lightgray",
+                    cursor="hand2",
+                    disabledforeground="gray",
+                    fg="black",
+                    font=("Arial", 12),
+                    height=2,
+                    highlightbackground="black",
+                    highlightcolor="green",
+                    highlightthickness=2,
+                    justify="center",
+                    overrelief="raised",
+                    padx=10,
+                    pady=5,
+                    width=15,
+                    wraplength=100)
+        roulette.pack(padx=20, pady=10)
+    if not gamblingallowed:
+            root.after(1000, gamblecheck)
+gamblecheck()
+global gambleamount
 root.after(1000, check1)
 root.after(1000, check2)
-
 root.mainloop()
